@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>챗봇 페이지</title>
+</head>
+<body>
+    <h1>챗봇 페이지</h1>
+    <form id="chat-form">
+        <input type="text" id="user-input" placeholder="메시지를 입력하세요">
+        <button type="submit">전송</button>
+    </form>
+    <div id="chat-box"></div>
+
+    <script>
+        document.getElementById("chat-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var userInput = document.getElementById("user-input").value;
+            sendMessage(userInput);
+        });
+        
+        function sendMessage(message) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/aaa");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        displayMessage(xhr.responseText);
+                    } else {
+                        displayMessage("오류 발생");
+                    }
+                }
+            };
+            var formData = "value_received=" + encodeURIComponent(message);
+            xhr.send(formData);
+        }
+        
+        function displayMessage(message) {
+            var chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += "<p>" + message + "</p>";
+        }
+        </script>
+</body>
+</html>
